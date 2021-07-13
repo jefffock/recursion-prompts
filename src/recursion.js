@@ -393,11 +393,9 @@ var buildList = function(value, length) {
   }
   if (Array.isArray(value) && value.length === 0) {
     if (length > 1) {
-      console.log('made it here')
       return result.concat([[]], buildList([], length - 1))
     }
     if (length === 1) {
-      console.log('length is 1 now')
       return [[]]
     }
   }
@@ -437,12 +435,11 @@ var countOccurrence = function(array, value) {
   //input array, target
   //output number
   //base case: when length is 1
-  console.log('array = ', array, 'value = ', value)
   if (array.length === 1) {
     if (array[0] === value) {
       return 1;
     }
-    return 0
+    return 0;
   }
   if (array.length > 1) {
     if (array[0] === value) {
@@ -455,7 +452,24 @@ var countOccurrence = function(array, value) {
 // 21. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
 var rMap = function(array, callback) {
-};
+
+  //input array
+  //output array
+  //base case: array length is 1
+    //returna first element
+  //recursive case
+    //array length > 1
+      //result.concat(callback(element), rmap e + 1)
+      var oldVal = array[0]
+  var newVal = [callback(array[0])];
+  console.log('newVal =', newVal)
+  if (array.length === 1) {
+    return newVal;
+  }
+  if (array.length > 1) {
+    return (newVal).concat(rMap(array.slice(1), callback))
+  }
+}
 
 // 22. Write a function that counts the number of times a key occurs in an object.
 // var obj = {'e':{'x':'y'},'t':{'r':{'e':'r'},'p':{'y':'r'}},'y':'e'};
@@ -469,11 +483,42 @@ var countKeysInObj = function(obj, key) {
 // countValuesInObj(obj, 'r') // 2
 // countValuesInObj(obj, 'e') // 1
 var countValuesInObj = function(obj, value) {
+  var result = 0;
+  var innerRecursiveFunction = function(obj, value) {
+    for (var x in obj) {
+      if (typeof obj[x] === 'object') {
+        innerRecursiveFunction(obj[x], value);
+      }
+      if (obj[x] === value) {
+        result++;
+      }
+    }
+  }
+  innerRecursiveFunction(obj, value);
+  return result;
 };
 
 // 24. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, oldKey, newKey) {
+  //input: object, key to replace, new key
+  //outputL object?
+  //iterate through object
+  //if key is oldkey
+    //obj at new key = object at oldkey
+    //delete obj oldkey
+  //if key is an object
+    //call function again
+  for (var x in obj) {
+    if (x === oldKey) {
+      obj[newKey] = obj[x]
+      delete obj[x];
+    }
+    if (typeof obj[x] === 'object') {
+      replaceKeysInObj(obj[x], oldKey, newKey)
+    }
+  }
+  return obj
 };
 
 // 25. Get the first n Fibonacci numbers. In the Fibonacci sequence, each subsequent
